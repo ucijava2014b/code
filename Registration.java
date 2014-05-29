@@ -31,45 +31,17 @@ public class Registration {
         //  REMOVE - once a seperate test class is written
         students.add(0, new Student());
         System.out.println("Registrating Main");
-        System.out.println(Util.test());
+	//        System.out.println(Util.test());
         System.out.println(students.get(0).toString());
         
         // Generate some a course and some class offerings
 
         ArrayList<CourseOffering> CS510Offerings = new ArrayList<CourseOffering>();
-	File coFile; 
-	File courseFile;
-	Scanner fileScanner;
-	try {
-	    coFile = new File("CourseOffering.csv");
-	    fileScanner = new Scanner(coFile);
-	    fileScanner.useDelimiter("\n");
-	    while (fileScanner.hasNext()) {
-		String coLine    = fileScanner.next();
-		String[] coElems = coLine.split(",");
-		CS510Offerings.add(new CourseOffering(new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse(coElems[0]), 
-						      new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse(coElems[1]), 
-						      Integer.parseInt(coElems[2]),null,null));
-	    }
-	    fileScanner.close();
-	} catch (FileNotFoundException e) {
-	    e.printStackTrace();
-	}
+	String CourseOfferingFile = "CourseOffering.csv";
+	String CoursesFile        = "Courses.csv";
 
-
-	try {
-	    courseFile = new File("Courses.csv");
-	    fileScanner = new Scanner(courseFile);
-	    fileScanner.useDelimiter("\n");
-	    while (fileScanner.hasNext()) {
-		String courseLine    = fileScanner.next();
-		String[] courseElems = courseLine.split(",");
-		courses.add(new Course(courseElems[0],courseElems[1],Integer.parseInt(courseElems[2]),courseElems[4],courseElems[4],null));
-	    }
-	    fileScanner.close();
-	} catch (FileNotFoundException e) {
-	    e.printStackTrace();
-	}
+	CS510Offerings = Util.addCourseOffering(CS510Offerings,CourseOfferingFile);
+	courses        = Util.addCourses(courses,CoursesFile);
 
         System.out.println(courses.get(0).writeln());
         System.out.println(courses.get(1).toString());
