@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.text.ParseException;
@@ -34,31 +35,43 @@ public class Registration {
         System.out.println(students.get(0).toString());
         
         // Generate some a course and some class offerings
-        // REMOVE - once data is read from file
+
         ArrayList<CourseOffering> CS510Offerings = new ArrayList<CourseOffering>();
-        CS510Offerings.add(new CourseOffering(new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse("01/14/2014"), 
-                                              new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse("05/23/2014"),
-                                              25, 
-                                              null,
-                                              null));
-        CS510Offerings.add(new CourseOffering(new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse("05/13/2014"), 
-                                                   new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse("09/23/2014"),
-                                                   30, 
-                                                   null,
-                                                   null));
-        
-        
-        courses.add(new Course("0001", 
-                               "Intro to C++ Programming", 
-                               510, 
-                               "Provides an intro to computer programming using the C++ langugage.", 
-                               "Computer Science", 
-                               CS510Offerings));   
+	File coFile; 
+	File courseFile;
+	Scanner fileScanner;
+	try {
+	    coFile = new File("CourseOffering.csv");
+	    fileScanner = new Scanner(coFile);
+	    fileScanner.useDelimiter("\n");
+	    while (fileScanner.hasNext()) {
+		String coLine    = fileScanner.next();
+		String[] coElems = coLine.split(",");
+		CS510Offerings.add(new CourseOffering(new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse(coElems[0]), 
+						      new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse(coElems[1]), 
+						      Integer.parseInt(coElems[2]),null,null));
+	    }
+	    fileScanner.close();
+	} catch (FileNotFoundException e) {
+	    e.printStackTrace();
+	}
+
+
+	try {
+	    courseFile = new File("Courses.csv");
+	    fileScanner = new Scanner(courseFile);
+	    fileScanner.useDelimiter("\n");
+	    while (fileScanner.hasNext()) {
+		String courseLine    = fileScanner.next();
+		String[] courseElems = courseLine.split(",");
+		courses.add(new Course(courseElems[0],courseElems[1],Integer.parseInt(courseElems[2]),courseElems[4],courseElems[4],null));
+	    }
+	    fileScanner.close();
+	} catch (FileNotFoundException e) {
+	    e.printStackTrace();
+	}
 
         System.out.println(courses.get(0).writeln());
-        
-
-        courses.add(new Course("CS123","Java I",32,"Introduction to Java","Computer Science",null));
         System.out.println(courses.get(1).toString());
 
 
