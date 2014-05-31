@@ -36,7 +36,7 @@ import java.util.Comparator;
 			this.ssn = ssn;
 			this.address = address;
 			this.address2 = address2;
-            this.city = city;
+			this.city = city;
 			this.state = state;
 			this.zip = zip;
 			this.email = email;

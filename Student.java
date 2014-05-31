@@ -27,9 +27,10 @@
 			 public void setDorm(String argDorm){this.dorm=argDorm;}
 			 
 			 //Constructor Method
-			 public Student(String firstName, String lastName, int age, String gender, String ssn, int nId, String collg, String drm)
-			  {   super(firstName, lastName, age, gender, ssn);
-				  
+		    public Student(String firstName, String lastName, int age, String gender, String ssn, int nId, String collg, String drm)
+		    {   
+			super(firstName, lastName, age, gender, ssn,"","","","","","","");
+			
 				  this.id = nId;
 				  this.college = collg;
 				  this.dorm = drm;       

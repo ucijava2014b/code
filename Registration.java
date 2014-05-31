@@ -16,6 +16,10 @@ public class Registration {
         //  Declare Variables
         ArrayList<Student> students = new ArrayList<Student>();
         ArrayList<Course> courses = new ArrayList<Course>();
+        ArrayList<CourseOffering> CS510Offerings = new ArrayList<CourseOffering>();
+	String StudentFile        = "Students.csv";
+	String CourseOfferingFile = "CourseOffering.csv";
+	String CoursesFile        = "Courses.csv";
 
         int loginSelection;
         int mainSelection;
@@ -29,20 +33,18 @@ public class Registration {
         
         //  Test Classes  
         //  REMOVE - once a seperate test class is written
-        students.add(0, new Student());
-        System.out.println("Registrating Main");
-	//        System.out.println(Util.test());
-        System.out.println(students.get(0).toString());
+
+        System.out.println("Registering Main");
+
         
         // Generate some a course and some class offerings
 
-        ArrayList<CourseOffering> CS510Offerings = new ArrayList<CourseOffering>();
-	String CourseOfferingFile = "CourseOffering.csv";
-	String CoursesFile        = "Courses.csv";
 
+	students       = Util.addStudents(students,StudentFile);
 	CS510Offerings = Util.addCourseOffering(CS510Offerings,CourseOfferingFile);
 	courses        = Util.addCourses(courses,CoursesFile);
 
+	System.out.println(Util.displayContents(StudentFile));
         System.out.println(courses.get(0).writeln());
         System.out.println(courses.get(1).toString());
 
