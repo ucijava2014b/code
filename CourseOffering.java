@@ -10,11 +10,11 @@ public class CourseOffering {
 	/*
 	// Member variables
 	*/
-	Date courseStartDate;
-	Date courseEndDate;
-	int maxStudents;
-	ArrayList<Student> enrolledStudents;
-	ArrayList<Student> waitlistedStudents;
+	private Date courseStartDate;
+	private Date courseEndDate;
+	private int maxStudents;
+	private ArrayList<Student> enrolledStudents;
+	private ArrayList<Student> waitlistedStudents;
 	
 	static final DateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy");
 		
@@ -110,7 +110,72 @@ public class CourseOffering {
 	// Member functions
 	*/
 	
-	// Writeln
+	// enrollStudent
+	// Enrolls a student. If there are no more spaces left it will add the student to the waitlist
+	void enrollStudent(Student enrollStudent)
+	{
+		// Check to see if the student is already enrolled or waitlisted
+		if(isStudentEnrolled(enrollStudent) || isStudentWaitlisted(enrollStudent)) {
+			throw new IllegalArgumentException("Student should never be enrolled twice or enrolled if on waitlist"); 
+		}
+		
+		// If the class is full add to the waitlist
+		if(enrolledStudents.size() >= maxStudents)
+			waitlistedStudents.add(enrollStudent);
+		else
+			enrolledStudents.add(enrollStudent);
+	}
+	
+	// dropStudent
+	// drops any student listed matching by ID in both enrolled and waitlisted
+	void dropStudent(Student dropStudent)
+	{
+		// Search the waitlisted students
+		removeFromList(waitlistedStudents, dropStudent);
+			
+		// Search the enrolled list
+		removeFromList(enrolledStudents, dropStudent);
+	}
+
+	// removeFromList
+	// Removes a student from a list passed in
+	private void removeFromList(ArrayList<Student> studentList, Student studentToRemove) {
+		for(int i = 0; i < studentList.size(); i++)
+		{
+			// Is there a match in the list for the ID
+			if(studentList.get(i).getId() == studentToRemove.getId()) {
+				studentList.remove(i);
+				// We removed one from the list so we need to decrease the counter
+				i--;
+			}
+		}		
+	}
+	
+	// isStudentEnrolled
+	// Returns true if a matching student ID is found in the enrolled students
+	boolean isStudentEnrolled(Student studentToFind)
+	{
+		return isInList(enrolledStudents, studentToFind);		
+	}
+
+	// isStudentWaitListed
+	// Returns true if a matching student ID is found in the waitlisted students
+	boolean isStudentWaitlisted(Student studentToFind)
+	{
+		return isInList(waitlistedStudents, studentToFind);
+	}
+	
+	// isInList
+	// Returns true if a student is found in a list
+	private boolean isInList(ArrayList<Student> studentList, Student studentToFind) {
+		for(Student currentStudent : studentList) {
+			if(currentStudent.getId() == studentToFind.getId())
+				return true;
+		}
+		return false;	
+	}
+			
+	// writeln
 	// Returns a comma delimited string containing all members of the class except for the student lists
 	String writeln() {
 		return 	DATE_FORMAT.format(courseStartDate) + "," +
@@ -118,6 +183,8 @@ public class CourseOffering {
 				maxStudents;
 	}
 	
+	// toString
+	// Returns a comma delimited string containing all members of the class except for the student lists
 	public String toString() {  
         return writeln();
     }

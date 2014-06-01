@@ -7,13 +7,13 @@ public class Course {
 	// Member variables
 	*/
 	
-	String courseID;
-	String courseName;
-	int courseNumber;
-	String courseOverview;
-	String department;
+	private String courseID;
+	private String courseName;
+	private int courseNumber;
+	private String courseOverview;
+	private String department;
 	
-	ArrayList<CourseOffering> courseOfferings = new ArrayList<CourseOffering>();
+	private ArrayList<CourseOffering> courseOfferings = new ArrayList<CourseOffering>();
 	
 	/*
 	// Constructors
