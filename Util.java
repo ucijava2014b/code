@@ -62,7 +62,22 @@ public class Util {
 	    while (fileScanner.hasNext()) {
 		String studentLine    = fileScanner.next();
 		String[] studentElems = studentLine.split(",");
-		Students.add(new Student(studentElems[0],studentElems[1],Integer.parseInt(studentElems[2]),studentElems[3],studentElems[4],Integer.parseInt(studentElems[5]),studentElems[6],studentElems[7]));
+		Students.add(new Student(studentElems[0],
+								studentElems[1].
+								Integer.parseInt(studentElems[2]),
+								studentElems[3],
+								studentElems[4],
+								studentElems[5],
+								studentElems[6],
+								studentElems[7],
+								studentElems[8],
+								studentElems[9],
+								studentElems[10],
+								studentElems[11],
+								studentElems[12],
+								studentElems[13],
+								studentElems[14]
+								 ));
 	    }
 	    fileScanner.close();
 	} catch (FileNotFoundException e) {

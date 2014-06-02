@@ -4,6 +4,7 @@
     *  2014 MAY 29 
     * 	
 	*  PersonClass Modified so collections.sort can be used
+	*  currently only sorts by lastname
 	*
     *
     */
@@ -18,7 +19,6 @@ import java.util.Comparator;
 		private String gender;
 		private String ssn;
 		private String address;
-		private String address2;
 		private String city;
 		private String state;
 		private String zip;
@@ -26,7 +26,7 @@ import java.util.Comparator;
 		private String phone;
 		
 		//Constructor Method
-		public Person(String firstName, String lastName, int age, String gender, String ssn, String address, String address2,
+		public Person(String firstName, String lastName, int age, String gender, String ssn, String address, 
 		String city, String state, String zip, String email, String phone) 
 		{
 			this.firstName = firstName;
@@ -35,7 +35,6 @@ import java.util.Comparator;
 			this.gender = gender;
 			this.ssn = ssn;
 			this.address = address;
-			this.address2 = address2;
 			this.city = city;
 			this.state = state;
 			this.zip = zip;
@@ -93,14 +92,6 @@ import java.util.Comparator;
 			this.address = address;
 		}
 
-		public String getAddress2() {
-			return address2;
-		}
-
-		public void setAddress2(String address2) {
-			this.address2 = address2;
-		}
-
 		public String getCity() {
 			return city;
 		}
@@ -156,7 +147,7 @@ import java.util.Comparator;
 		//return String.format("%10s %10d %10s %10s", getFullName() , getAge() , getGender() , getSsn() );
 		  return firstName + "," + lastName
 				+ ",\n" + age + ",\n" + gender + ",\n" + ssn 
-				+ ",\n" + address + "," + address2 
+				+ ",\n" + address 
 				+ ",\n" + city 
 				+ ",\n" + state + ", " + zip 
 				+ ",\n" + email 
