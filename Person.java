@@ -1,7 +1,7 @@
    /**
     *  Team B
 	*  Shamima Huq
-    *  2014 MAY 29 
+    *  2014 JUNE 01 
     * 	
 	*  PersonClass Modified so collections.sort can be used
 	*  currently only sorts by lastname

@@ -1,7 +1,7 @@
    /**
     *  Team B
 	*  Shamima Huq
-    *  2014 MAY 29 
+    *  2014 JUNE 01 
     * 	
 	*  Student class Extends Person class
 	*
@@ -52,6 +52,7 @@ public final class Student extends Person
 	  return super.toString() + ",\n" + id 
 	                          + ",\n College = " + college;
 	 }
+	
 	//I've unit tested body of this section of the code and it works...login student with 3 max tries
 	// but I'm not sure how to tie this together with the checklogin --- can Registration.java test this out?
 	// passing student to the Login process is throwing an error
