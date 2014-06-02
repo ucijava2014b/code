@@ -9,6 +9,7 @@
     */
 //Student class, subclass of Person
 import java.io.*;
+import java.util.Comparator;
 public final class Student extends Person
 {
 	private int id;
@@ -42,7 +43,7 @@ public final class Student extends Person
 	// comparator to sort by last name
 	private static class ByLastName implements Comparator<Student> {
 		public int compare(Student a, Student b) {
-		return a.lastName.compareTo(b.getLastName());
+		return a.getLastName().compareTo(b.getLastName());
 		}
 	}
  
@@ -56,7 +57,7 @@ public final class Student extends Person
 	//I've unit tested body of this section of the code and it works...login student with 3 max tries
 	// but I'm not sure how to tie this together with the checklogin --- can Registration.java test this out?
 	// passing student to the Login process is throwing an error
-	private static void Login(Student) throws IOException{
+	private void Login() throws IOException{
    
         	String un, pw;
 			Boolean isLoggedIn = false;
