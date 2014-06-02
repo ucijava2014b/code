@@ -100,11 +100,11 @@ public class Course {
 		return this.courseNumber;
 	}
 	
-	String setCourseOverview(){
+	String getCourseOverview(){
 		return this.courseOverview;
 	}
 	
-	String setDepartment(){
+	String getDepartment(){
 		return this.department;
 	}
 	
@@ -119,10 +119,8 @@ public class Course {
 	// removeCourseOffering
 	// Removes a course offering from the list 
 	boolean removeCourseOffering(CourseOffering courseOffer){
-		for(CourseOffering course : courseOfferings) {
-			// TODO
-		}
-		// didn't find the object to remove
+		// We don't need this function. Implement if we ever do. Just get and set the course offerring list
+		assert(false);
 		return false;
 	}
 	

@@ -67,6 +67,11 @@ public class CourseOffering {
 	}
 	
 	void setMaxStudents(int maxStudents){
+		// Should never set the max students to be less than the number currently enrolled. 
+		// If changing the number enrolled, move to waitlist first then decrease the student count
+		if(enrolledStudents != null && maxStudents < enrolledStudents.size())
+			throw new IllegalArgumentException("Max students can never be less than the number of enrolled students.");
+				
 		this.maxStudents = maxStudents;
 	}
 	
@@ -128,27 +133,29 @@ public class CourseOffering {
 	
 	// dropStudent
 	// drops any student listed matching by ID in both enrolled and waitlisted
-	void dropStudent(Student dropStudent)
+	boolean dropStudent(Student dropStudent)
 	{
-		// Search the waitlisted students
-		removeFromList(waitlistedStudents, dropStudent);
-			
-		// Search the enrolled list
-		removeFromList(enrolledStudents, dropStudent);
+		// Search the waitlisted & enrolled students
+		return removeFromList(waitlistedStudents, dropStudent) || removeFromList(enrolledStudents, dropStudent);
 	}
 
 	// removeFromList
 	// Removes a student from a list passed in
-	private void removeFromList(ArrayList<Student> studentList, Student studentToRemove) {
+	private boolean removeFromList(ArrayList<Student> studentList, Student studentToRemove) {
+		boolean found = false;
+		
 		for(int i = 0; i < studentList.size(); i++)
 		{
 			// Is there a match in the list for the ID
 			if(studentList.get(i).getId() == studentToRemove.getId()) {
 				studentList.remove(i);
+				found = true;
 				// We removed one from the list so we need to decrease the counter
 				i--;
 			}
-		}		
+		}
+		
+		return found;
 	}
 	
 	// isStudentEnrolled
