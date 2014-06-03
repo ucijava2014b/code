@@ -1,5 +1,6 @@
 
 import org.apache.commons.io.FileUtils;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.text.ParseException;
@@ -12,7 +13,7 @@ import java.util.Locale;
 public class Util {
 
     
-    public static ArrayList addCourseOffering(ArrayList CourseOffering, String fileName) throws ParseException{
+    public static ArrayList<CourseOffering> addCourseOffering(ArrayList<CourseOffering> CourseOffering, String fileName) throws ParseException{
 	File coFile;
 	Scanner fileScanner;
 	try {
@@ -33,7 +34,7 @@ public class Util {
 	return CourseOffering;
     }
 
-    public static ArrayList addCourses(ArrayList Courses, String courseFile) throws ParseException{
+    public static ArrayList<Course> addCourses(ArrayList<Course> Courses, String courseFile) throws ParseException{
 	File coFile;
 	Scanner fileScanner;
 	try {
@@ -52,7 +53,7 @@ public class Util {
 	return Courses;
     }
 
-    public static ArrayList addStudents(ArrayList Students, String studentFile) throws ParseException{
+    public static ArrayList<Student> addStudents(ArrayList<Student> Students, String studentFile) throws ParseException{
 	File stFile;
 	Scanner fileScanner;
 	try {
@@ -62,8 +63,24 @@ public class Util {
 	    while (fileScanner.hasNext()) {
 		String studentLine    = fileScanner.next();
 		String[] studentElems = studentLine.split(",");
+
+		//0 public Student(String firstName, 
+		//1 			 String lastName, 
+		//2				 int age, 
+		//3				 String gender, 
+		//4				 String ssn, 
+		//5				 String address, 
+		//6				 String city, 
+		//7				 String state, 
+		//8				 String zip, 
+		//9				 String email, 
+		//10			 String phone, 
+		//11			 int nId, 
+		//12			 String collg, 
+		//13			 String usr, 
+		//14			 String pw)
 		Students.add(new Student(studentElems[0],
-								studentElems[1].
+								studentElems[1],
 								Integer.parseInt(studentElems[2]),
 								studentElems[3],
 								studentElems[4],
@@ -73,7 +90,7 @@ public class Util {
 								studentElems[8],
 								studentElems[9],
 								studentElems[10],
-								studentElems[11],
+								Integer.parseInt(studentElems[11]),
 								studentElems[12],
 								studentElems[13],
 								studentElems[14]
