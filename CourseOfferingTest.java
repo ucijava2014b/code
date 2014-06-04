@@ -124,6 +124,15 @@ public class CourseOfferingTest {
 		// Throws an exception - not a number
 		CourseOffering test = new CourseOffering("300,11/21/2014,11/22/2014,Not a number");		
 	}
+
+	@Test
+	public void testCourseOfferingID() throws ParseException {
+		CourseOffering test = setupClass();
+		
+		test.setCourseOfferingID("5425");
+		
+		assertTrue(test.getCourseOfferingID().compareTo("5425")==0);
+	}
 	
 	@Test
 	public void testCourseStartDate() throws ParseException {
@@ -764,13 +773,13 @@ public class CourseOfferingTest {
 	public void testWriteln() throws ParseException {
 		CourseOffering test = setupClass();
 				
-		assertTrue(test.writeln().compareTo("11/21/2014,11/22/2014,3") == 0);
+		assertTrue(test.writeln().compareTo("300,11/21/2014,11/22/2014,3") == 0);
 	}
 
 	@Test
 	public void testToString() throws ParseException {
 		CourseOffering test = setupClass();
 		
-		assertTrue(test.toString().compareTo("11/21/2014,11/22/2014,3") == 0);
+		assertTrue(test.toString().compareTo("300,11/21/2014,11/22/2014,3") == 0);
 	}
 }

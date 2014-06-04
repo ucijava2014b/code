@@ -197,7 +197,8 @@ public class CourseOffering {
 	// writeln
 	// Returns a comma delimited string containing all members of the class except for the student lists
 	String writeln() {
-		return 	DATE_FORMAT.format(courseStartDate) + "," +
+		return 	courseOfferingID + "," + 
+				DATE_FORMAT.format(courseStartDate) + "," +
 				DATE_FORMAT.format(courseEndDate) + "," +
 				maxStudents;
 	}
