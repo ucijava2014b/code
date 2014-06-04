@@ -87,7 +87,8 @@ public class CourseOfferingTest {
 				 					 "bill.apple", 
 				 					 "password"));
 			
-		CourseOffering test = new CourseOffering (new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse("11/21/2014"),
+		CourseOffering test = new CourseOffering ("300",
+												  new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse("11/21/2014"),
                                                   new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse("11/22/2014"),
 												  3,
 												  enrolledList,
@@ -103,25 +104,25 @@ public class CourseOfferingTest {
 
 	@Test
 	public void testCourseOfferingString() {
-		CourseOffering test = new CourseOffering("11/21/2014,11/22/2014,25");		
+		CourseOffering test = new CourseOffering("300,11/21/2014,11/22/2014,25");		
 	}
 
 	@Test (expected = IllegalArgumentException.class)
 	public void testCourseOfferingStringException1() {
 		// Throws an exception - too many parameters
-		CourseOffering test = new CourseOffering("11/21/2014,11/22/2014,25,Too many");		
+		CourseOffering test = new CourseOffering("300,11/21/2014,11/22/2014,25,Too many");		
 	}
 
 	@Test (expected = IllegalArgumentException.class)
 	public void testCourseOfferingStringException2() {
 		// Throws an exception - too few parameters
-		CourseOffering test = new CourseOffering("11/21/2014,11/22/2014");		
+		CourseOffering test = new CourseOffering("300,11/21/2014,11/22/2014");		
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void testCourseOfferingStringException3() {
 		// Throws an exception - not a number
-		CourseOffering test = new CourseOffering("11/21/2014,11/22/2014,Not a number");		
+		CourseOffering test = new CourseOffering("300,11/21/2014,11/22/2014,Not a number");		
 	}
 	
 	@Test

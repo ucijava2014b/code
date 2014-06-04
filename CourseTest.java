@@ -13,13 +13,15 @@ public class CourseTest {
 	private Course setupClass() throws ParseException {
 		// Generate some a course and some class offerings
 		ArrayList<CourseOffering> CS510Offerings = new ArrayList<CourseOffering>();
-		CS510Offerings.add(new CourseOffering(new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse("01/14/2014"), 
+		CS510Offerings.add(new CourseOffering("300",
+											  new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse("01/14/2014"), 
 		  									  new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse("05/23/2014"),
 		   									  25, 
 		   									  null,
 		   									  null));
 		        
-		CS510Offerings.add(new CourseOffering(new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse("05/13/2014"), 
+		CS510Offerings.add(new CourseOffering("400",
+											  new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse("05/13/2014"), 
 				  		   					  new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse("09/23/2014"),
 				  		   					  30, 
 				  		   					  null,
@@ -118,7 +120,8 @@ public class CourseTest {
 		assertTrue(test.getCourseOfferings().size() == 2);
 		
 		ArrayList<CourseOffering> CS510Offerings = new ArrayList<CourseOffering>();
-		CS510Offerings.add(new CourseOffering(new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse("01/14/2014"), 
+		CS510Offerings.add(new CourseOffering("400",
+											  new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse("01/14/2014"), 
 		  									  new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse("05/23/2014"),
 		   									  25, 
 		   									  null,

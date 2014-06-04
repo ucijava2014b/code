@@ -5,6 +5,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 import java.util.Locale;
 
@@ -23,9 +24,20 @@ public class Util {
 	    while (fileScanner.hasNext()) {
 		String coLine    = fileScanner.next();
 		String[] coElems = coLine.split(",");
-		CourseOffering.add(new CourseOffering(new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse(coElems[0]), 
-						      new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse(coElems[1]), 
-						      Integer.parseInt(coElems[2]),null,null));
+		
+		// 0 CourseOffering (String courseOfferingID,
+		// 1			  	Date courseStartDate,
+		// 2	 			Date courseEndDate,
+		// 3				int maxStudents,
+		// 4 				ArrayList<Student> enrolledStudents,
+		// 5				ArrayList<Student> waitlistedStudents)
+		
+		CourseOffering.add(new CourseOffering(coElems[0],
+						 					  new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse(coElems[1]), 
+						 					  new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse(coElems[2]), 
+						 					  Integer.parseInt(coElems[3]),
+						 					  null,
+						 					  null));
 	    }
 	    fileScanner.close();
 	} catch (FileNotFoundException e) {

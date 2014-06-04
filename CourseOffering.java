@@ -10,6 +10,7 @@ public class CourseOffering {
 	/*
 	// Member variables
 	*/
+	private String courseOfferingID; 
 	private Date courseStartDate;
 	private Date courseEndDate;
 	private int maxStudents;
@@ -22,12 +23,14 @@ public class CourseOffering {
 	// Constructors
 	*/
 	
-	CourseOffering (Date courseStartDate,
+	CourseOffering (String courseOfferingID,
+					Date courseStartDate,
 					Date courseEndDate,
 					int maxStudents,
 					ArrayList<Student> enrolledStudents,
 					ArrayList<Student> waitlistedStudents)
 	{
+		setCourseOfferingID(courseOfferingID);
 		setCourseStartDate(courseStartDate);
 		setCourseEndDate(courseEndDate);
 		setMaxStudents(maxStudents);
@@ -41,13 +44,14 @@ public class CourseOffering {
 		List<String> memberListString = Arrays.asList(s.split(","));
 			
 		// Check to make sure we have enough tokens
-		if(memberListString.size() != 3)
+		if(memberListString.size() != 4)
 			throw new IllegalArgumentException("String did not contain the correct number of tokens.");
 			
 		try{
-			setCourseStartDate(DATE_FORMAT.parse(memberListString.get(0)));
-			setCourseEndDate(DATE_FORMAT.parse(memberListString.get(1)));
-			setMaxStudents(Integer.parseInt(memberListString.get(2)));
+			setCourseOfferingID(memberListString.get(0));
+			setCourseStartDate(DATE_FORMAT.parse(memberListString.get(1)));
+			setCourseEndDate(DATE_FORMAT.parse(memberListString.get(2)));
+			setMaxStudents(Integer.parseInt(memberListString.get(3)));
 		}
 		catch(Exception e) {
 			throw new IllegalArgumentException("Parameter string was not an expected format.");
@@ -58,6 +62,10 @@ public class CourseOffering {
 	// Set functions
 	*/
 
+	void setCourseOfferingID(String courseOfferingID) {
+		this.courseOfferingID = courseOfferingID;
+	}
+	
 	void setCourseStartDate(Date courseStartDate) {
 		this.courseStartDate = courseStartDate;
 	}
@@ -91,6 +99,10 @@ public class CourseOffering {
 	// Get functions
 	*/
 
+	String getCourseOfferingID() {
+		return this.courseOfferingID;
+	}
+	
 	Date getCourseStartDate() {
 		return this.courseStartDate;
 	}
