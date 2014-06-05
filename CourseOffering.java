@@ -52,6 +52,8 @@ public class CourseOffering {
 			setCourseStartDate(DATE_FORMAT.parse(memberListString.get(1)));
 			setCourseEndDate(DATE_FORMAT.parse(memberListString.get(2)));
 			setMaxStudents(Integer.parseInt(memberListString.get(3)));
+			setEnrolledStudents(null);
+			setWaitListedStudents(null);
 		}
 		catch(Exception e) {
 			throw new IllegalArgumentException("Parameter string was not an expected format.");

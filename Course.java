@@ -50,6 +50,7 @@ public class Course {
 			setCourseNumber(Integer.parseInt(memberListString.get(2)));
 			setCourseOverview(memberListString.get(3));
 			setDepartment(memberListString.get(4));
+			setCourseOfferings(null);
 		}
 		catch(Exception e) {
 			throw new IllegalArgumentException("Parameter string was not an expected format.");

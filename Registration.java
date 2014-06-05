@@ -27,16 +27,6 @@ public class Registration {
 		Student newStudent;
 		String logoutSelection = new String("N");
 
-		//  Read Data  
-		//  TODO Call Util 
-
-
-		//  Test Classes  
-		//  REMOVE - once a seperate test class is written
-
-		System.out.println("Registering Main");
-
-
 		// Generate some a course and some class offerings
 
 		try{
@@ -46,6 +36,8 @@ public class Registration {
 			courses = Util.addCourses(courses, COURSES_FILE);
 
 			courses = Util.addCourseOffering(courses, COURSE_OFFERING_FILE);
+			
+			// TODO - need to map students to their offered courses
 		}
 		catch (Exception e) {
 			// Something went horribly wrong
@@ -131,35 +123,46 @@ public class Registration {
 		Collections.sort(courses, new courseCompare());
 		ArrayList<CourseOffering> offeringNum = new ArrayList<CourseOffering>();
 		int i = 0;
-		
+
 		// Loop through all the courses and print them
 		for(Course course : courses) {
 			System.out.println(course.toString());
-			
+
 			// If a course has available offerings display them
-			if(course.getCourseOfferings() != null){
-				for(CourseOffering offering : course.getCourseOfferings()) {
-					// if the current student is not enrolled, then display the offering
-					if(!offering.isStudentEnrolled(currentStudent) && !offering.isStudentWaitlisted(currentStudent)) {
-						System.out.print("\t"+(i+1) + ":  ");
-						// Display if they are enrolling vs. adding to waitlist
-						if(offering.getEnrolledStudents().size() < offering.getMaxStudents())
-							System.out.print("Add->");
-						else
-							System.out.print("Waitlist->");
-						System.out.println(offering.toString());
-						offeringNum.add(i, offering);
-						i++;
-					}
+			for(CourseOffering offering : course.getCourseOfferings()) {
+				// if the current student is not enrolled, then display the offering
+				if(!offering.isStudentEnrolled(currentStudent) && !offering.isStudentWaitlisted(currentStudent)) {
+					System.out.print("\t"+(i+1) + ":  ");
+					// Display if they are enrolling vs. adding to waitlist
+					if(offering.getEnrolledStudents().size() < offering.getMaxStudents())
+						System.out.print("Add->");
+					else
+						System.out.print("Waitlist->");
+					System.out.println(offering.toString());
+					offeringNum.add(i, offering);
+					i++;
 				}
 			}
 		}
+
+		// Check to see if there are no available courses
+		if(offeringNum.size() == 0) {
+			System.out.println("No available courses.");
+			return;	
+		}
+		
+		// Prompt the user for their selection
 		System.out.println("Enter the number of the course offering you would like to add");
 		System.out.print("or enter zero to return to main menu:  ");
 		String selection = input.next();
-		int optionNum = Integer.parseInt(selection);
-		if(optionNum > 0 && optionNum <= i){
-			offeringNum.get(optionNum-1).enrollStudent(currentStudent);
+		try{
+			int optionNum = Integer.parseInt(selection);
+			if(optionNum > 0 && optionNum <= i){
+				offeringNum.get(optionNum-1).enrollStudent(currentStudent);
+			}	
+		}
+		catch (NumberFormatException e) {
+			System.out.println("Invalid selection. Returning to main menu.");
 		}
 	}
 
@@ -167,24 +170,32 @@ public class Registration {
 		Collections.sort(courses, new courseCompare());
 		ArrayList<CourseOffering> offeringNum = new ArrayList<CourseOffering>();
 		int i = 0;
+
+		// Loop through the enrolled courses
 		for(Course course : courses) {
-			if(course.getCourseOfferings() != null){
-				for(CourseOffering offering : course.getCourseOfferings()) {
-					if(offering.isStudentEnrolled(currentStudent) || offering.isStudentWaitlisted(currentStudent)){
-						System.out.println(course.toString());
-						System.out.print("\t" + (i+1) + ":  ");
-						// Display if they are dropping vs. removing from waitlist
-						if(offering.isStudentEnrolled(currentStudent))
-							System.out.print("Drop->");
-						else
-							System.out.print("Remove from waitlist->");
-						System.out.println(offering.toString());
-						offeringNum.add(i, offering);
-						i++;
-					}
+			for(CourseOffering offering : course.getCourseOfferings()) {
+				if(offering.isStudentEnrolled(currentStudent) || offering.isStudentWaitlisted(currentStudent)){
+					System.out.println(course.toString());
+					System.out.print("\t" + (i+1) + ":  ");
+					// Display if they are dropping vs. removing from waitlist
+					if(offering.isStudentEnrolled(currentStudent))
+						System.out.print("Drop->");
+					else
+						System.out.print("Remove from waitlist->");
+					System.out.println(offering.toString());
+					offeringNum.add(i, offering);
+					i++;
 				}
 			}
 		}
+
+		// Check to see if the list of courses is empty
+		if(offeringNum.size() == 0){
+			System.out.println("No enrolled or waitlisted courses.");
+			return;
+		}
+
+		// Prompt the user for their selection
 		System.out.println("Enter the number of the course offering you would like to drop");
 		System.out.print("or enter zero to return to main menu:  ");
 		String selection = input.next();
@@ -194,7 +205,7 @@ public class Registration {
 				offeringNum.get(optionNum-1).dropStudent(currentStudent);
 			}
 		} catch (NumberFormatException e) {
-
+			System.out.println("Invalid selection. Returning to main menu.");
 		}
 
 	}
