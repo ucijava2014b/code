@@ -13,6 +13,8 @@ public class Course {
 	private String courseOverview;
 	private String department;
 	
+	private static final String NEWLINE = System.getProperty("line.separator");
+	
 	private ArrayList<CourseOffering> courseOfferings = new ArrayList<CourseOffering>();
 	
 	/*
@@ -143,8 +145,8 @@ public class Course {
 	// Prints a formatted course description
     public String toString() {  
         return "Department: " + department + 
-        	   "\r" + courseNumber +
+        		NEWLINE + courseNumber +
         	   " - " + courseName +
-        	   "\rCourse Overview: " + courseOverview;
+        	   NEWLINE + "Course Overview: " + courseOverview;
     }
 }
