@@ -142,6 +142,11 @@ public class Registration {
 					// if the current student is not enrolled, then display the offering
 					if(!offering.isStudentEnrolled(currentStudent) && !offering.isStudentWaitlisted(currentStudent)) {
 						System.out.print("\t"+(i+1) + ":  ");
+						// Display if they are enrolling vs. adding to waitlist
+						if(offering.getEnrolledStudents().size() < offering.getMaxStudents())
+							System.out.print("Add->");
+						else
+							System.out.print("Waitlist->");
 						System.out.println(offering.toString());
 						offeringNum.add(i, offering);
 						i++;
@@ -165,9 +170,14 @@ public class Registration {
 		for(Course course : courses) {
 			if(course.getCourseOfferings() != null){
 				for(CourseOffering offering : course.getCourseOfferings()) {
-					if(offering.isStudentEnrolled(currentStudent)){
+					if(offering.isStudentEnrolled(currentStudent) || offering.isStudentWaitlisted(currentStudent)){
 						System.out.println(course.toString());
 						System.out.print("\t" + (i+1) + ":  ");
+						// Display if they are dropping vs. removing from waitlist
+						if(offering.isStudentEnrolled(currentStudent))
+							System.out.print("Drop->");
+						else
+							System.out.print("Remove from waitlist->");
 						System.out.println(offering.toString());
 						offeringNum.add(i, offering);
 						i++;
@@ -202,7 +212,7 @@ public class Registration {
 			}
 		}
 		if(loginStudent == null ){
-			System.out.print("Login Failed");
+			System.out.println("Login Failed");
 		}
 		return loginStudent;
 	}

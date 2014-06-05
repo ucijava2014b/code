@@ -142,7 +142,9 @@ public class CourseTest {
 	@Test
 	public void testToString() {
 		Course test = new Course("123,Class of Something,532,A class about something,Something Department");
+			
+		String s = "Department: Something Department\r532 - Class of Something\rCourse Overview: A class about something";
 		
-		assertTrue(test.toString().compareTo("123,Class of Something,532,A class about something,Something Department") == 0);
+		assertTrue(test.toString().compareTo(s) == 0);
 	}
 }

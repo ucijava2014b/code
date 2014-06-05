@@ -780,6 +780,6 @@ public class CourseOfferingTest {
 	public void testToString() throws ParseException {
 		CourseOffering test = setupClass();
 		
-		assertTrue(test.toString().compareTo("300,11/21/2014,11/22/2014,3") == 0);
+		assertTrue(test.toString().compareTo("Start Date: 11/21/2014,End Date: 11/22/2014 3/3 Students Enrolled 2 Waitlisted Students") == 0);
 	}
 }

@@ -84,15 +84,23 @@ public class CourseOffering {
 	}
 	
 	void setEnrolledStudents(ArrayList<Student> enrolledStudents){
+		// Check for a null list
+		if(enrolledStudents == null)
+			enrolledStudents = new ArrayList<Student>();
+		
 		// Check to see if we are exceeding the max number of students
-		if(enrolledStudents != null && enrolledStudents.size() > maxStudents)
+		if(enrolledStudents.size() > maxStudents)
 			throw new IllegalArgumentException("Too many students attempted to be enrolled.");
 		
 		this.enrolledStudents = enrolledStudents;
 	}
 	
 	void setWaitListedStudents(ArrayList<Student> waitlistedStudents){
-		this.waitlistedStudents = waitlistedStudents;
+		// Check for a null list		
+		if(waitlistedStudents != null)
+			this.waitlistedStudents = waitlistedStudents;
+		else
+			this.waitlistedStudents = new ArrayList<Student>();
 	}
 	
 	/*
@@ -135,14 +143,6 @@ public class CourseOffering {
 		if(isStudentEnrolled(enrollStudent) || isStudentWaitlisted(enrollStudent)) {
 			throw new IllegalArgumentException("Student should never be enrolled twice or enrolled if on waitlist"); 
 		}
-		
-		// See if we need to build a list of students
-		if(enrolledStudents == null)
-			enrolledStudents = new ArrayList<Student>();
-		
-		// See if we need to build a list of students
-		if(waitlistedStudents == null)
-			waitlistedStudents = new ArrayList<Student>();
 				
 		// If the class is full add to the waitlist
 		if(enrolledStudents.size() >= maxStudents)

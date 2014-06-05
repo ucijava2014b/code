@@ -81,6 +81,10 @@ public class Course {
 	}
 	
 	void setCourseOfferings(ArrayList<CourseOffering>  courseOfferings){
+		// Check for a null list
+		if(courseOfferings == null)
+			courseOfferings = new ArrayList<CourseOffering>();
+		
 		this.courseOfferings = courseOfferings;
 	}
 		
