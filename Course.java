@@ -13,6 +13,8 @@ public class Course {
 	private String courseOverview;
 	private String department;
 	
+	private static final String NEWLINE = System.getProperty("line.separator");
+	
 	private ArrayList<CourseOffering> courseOfferings = new ArrayList<CourseOffering>();
 	
 	/*
@@ -50,6 +52,7 @@ public class Course {
 			setCourseNumber(Integer.parseInt(memberListString.get(2)));
 			setCourseOverview(memberListString.get(3));
 			setDepartment(memberListString.get(4));
+			setCourseOfferings(null);
 		}
 		catch(Exception e) {
 			throw new IllegalArgumentException("Parameter string was not an expected format.");
@@ -81,6 +84,10 @@ public class Course {
 	}
 	
 	void setCourseOfferings(ArrayList<CourseOffering>  courseOfferings){
+		// Check for a null list
+		if(courseOfferings == null)
+			courseOfferings = new ArrayList<CourseOffering>();
+		
 		this.courseOfferings = courseOfferings;
 	}
 		
@@ -124,7 +131,7 @@ public class Course {
 		return false;
 	}
 	
-	// Writeln
+	// writeln
 	// Returns a comma delimited string containing all members of the class except for the course offerings
 	String writeln() {
 		return courseID + "," +
@@ -134,7 +141,12 @@ public class Course {
 			   department;
 	}
 
+	// toString
+	// Prints a formatted course description
     public String toString() {  
-        return writeln();
+        return "Department: " + department + 
+        		NEWLINE + courseNumber +
+        	   " - " + courseName +
+        	   NEWLINE + "Course Overview: " + courseOverview;
     }
 }

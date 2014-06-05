@@ -11,6 +11,7 @@ import java.util.Collections;
 public class Registration {
 
     static Scanner input = new Scanner(System.in);
+<<<<<<< HEAD
     static String StudentFile        = "Students.csv";
     static String CourseOfferingFile = "CourseOffering.csv";
     static String RegistrationFile   = "Registrations.csv";
@@ -23,31 +24,54 @@ public class Registration {
     
     public static void main(String[] args) throws ParseException{
         //  Declare Variables
+=======
+
+    static final String STUDENT_FILE = "Students.csv";
+    static final String COURSE_OFFERING_FILE = "CourseOffering.csv";
+    static final String COURSES_FILE = "Courses.csv";
+
+    public static void main(String[] args) {
+        //  Declare Variables
+        ArrayList<Student> students = new ArrayList<Student>();
+        ArrayList<Course> courses = new ArrayList<Course>();
+>>>>>>> FETCH_HEAD
 
         String loginSelection;
         String mainSelection;
         Student newStudent;
         String logoutSelection = new String("N");
+<<<<<<< HEAD
         
         //  Read Data  
         
         
+=======
+
+>>>>>>> FETCH_HEAD
         // Generate some a course and some class offerings
 
+        try{
+            
+            students = Util.addStudents(students, STUDENT_FILE);
 
-    students       = Util.addStudents(students,StudentFile);
-    CS510Offerings = Util.addCourseOffering(CS510Offerings,CourseOfferingFile);
-    courses        = Util.addCourses(courses,CoursesFile);
+            courses = Util.addCourses(courses, COURSES_FILE);
 
-    CS510Offerings.get(0).setEnrolledStudents(new ArrayList<Student>());
-    CS510Offerings.get(0).setWaitListedStudents(new ArrayList<Student>());
-    CS510Offerings.get(1).setEnrolledStudents(new ArrayList<Student>());
-    CS510Offerings.get(1).setWaitListedStudents(new ArrayList<Student>());
-    courses.get(0).setCourseOfferings(CS510Offerings);
-
+<<<<<<< HEAD
     System.out.println(Util.toString(StudentFile));
     System.out.println(courses.get(0).writeln());
     System.out.println(courses.get(1).toString());
+=======
+            courses = Util.addCourseOffering(courses, COURSE_OFFERING_FILE);
+            
+            // TODO - need to map students to their offered courses
+        }
+        catch (Exception e) {
+            // Something went horribly wrong
+            System.out.println("Error loading configuration.");
+            e.printStackTrace();
+            return;
+        }
+>>>>>>> FETCH_HEAD
 
 
         //  Login Prompt
@@ -58,8 +82,8 @@ public class Registration {
                 //  Main Menu Prompt
                 if(currentStudent != null){
                     do{
-                       mainSelection = mainMenu();
-                       if (mainSelection.equals("1")){
+                        mainSelection = mainMenu();
+                        if (mainSelection.equals("1")){
                             displayAvailableCourses(currentStudent,courses);
                         }
                         else if(mainSelection.equals("2")){
@@ -67,7 +91,7 @@ public class Registration {
                         }
                         else if(mainSelection.equals("3")){
                             System.out.print("Please confirm you would like to logout (Y/N):  ");
-                            logoutSelection = input.next();
+                            logoutSelection = input.nextLine();
                             System.out.println("");
                         }
                         else{
@@ -97,12 +121,12 @@ public class Registration {
                 System.out.println("Invalid selection");
             }
         } while (! loginSelection.equals("3"));
-        
+
         //  Save Data
         //  TODO Call Util
 
     }
-    
+
     private static String loginMenu(){
         System.out.println("==================================");
         System.out.println("Welcome to the Registration System");
@@ -111,11 +135,11 @@ public class Registration {
         System.out.println("2. Request Access");
         System.out.println("3. Exit");
         System.out.print("Enter the number of you request:  "); 
-        String selection = input.next();
+        String selection = input.nextLine();
         System.out.println("");
         return selection;
     }
-    
+
     private static String mainMenu(){
         System.out.println("==================================");
         System.out.println("Main Menu");
@@ -124,73 +148,109 @@ public class Registration {
         System.out.println("2. Display all enrolled courses and drop course");
         System.out.println("3. Logout");
         System.out.print("Enter the number of you request:  "); 
-        String selection = input.next();
+        String selection = input.nextLine();
         System.out.println("");
         return selection;
     }
-    
-    
+
+
     private static void displayAvailableCourses(Student currentStudent,ArrayList<Course> courses){
         Collections.sort(courses, new courseCompare());
         ArrayList<CourseOffering> offeringNum = new ArrayList<CourseOffering>();
         int i = 0;
+
+        // Loop through all the courses and print them
         for(Course course : courses) {
-            System.out.println(course.writeln());
-            if(course.getCourseOfferings() != null){
-                for(CourseOffering offering : course.getCourseOfferings()) {
-                    System.out.print((i+1) + ":  ");
-                    System.out.println(offering.writeln());
+            System.out.println(course.toString());
+
+            // If a course has available offerings display them
+            for(CourseOffering offering : course.getCourseOfferings()) {
+                // if the current student is not enrolled, then display the offering
+                if(!offering.isStudentEnrolled(currentStudent) && !offering.isStudentWaitlisted(currentStudent)) {
+                    System.out.print("\t"+(i+1) + ":  ");
+                    // Display if they are enrolling vs. adding to waitlist
+                    if(offering.getEnrolledStudents().size() < offering.getMaxStudents())
+                        System.out.print("Add->");
+                    else
+                        System.out.print("Waitlist->");
+                    System.out.println(offering.toString());
                     offeringNum.add(i, offering);
                     i++;
                 }
             }
         }
+
+        // Check to see if there are no available courses
+        if(offeringNum.size() == 0) {
+            System.out.println("No available courses.");
+            return;    
+        }
+        
+        // Prompt the user for their selection
         System.out.println("Enter the number of the course offering you would like to add");
         System.out.print("or enter zero to return to main menu:  ");
-        String selection = input.next();
-        int optionNum = Integer.parseInt(selection);
-        if(optionNum > 0 && optionNum <= i){
-            offeringNum.get(optionNum-1).enrollStudent(currentStudent);
+        String selection = input.nextLine();
+        try{
+            int optionNum = Integer.parseInt(selection);
+            if(optionNum > 0 && optionNum <= i){
+                offeringNum.get(optionNum-1).enrollStudent(currentStudent);
+            }    
+        }
+        catch (NumberFormatException e) {
+            System.out.println("Invalid selection. Returning to main menu.");
         }
     }
-    
+
     private static void displayEnrolledCourses(Student currentStudent,ArrayList<Course> courses){
         Collections.sort(courses, new courseCompare());
         ArrayList<CourseOffering> offeringNum = new ArrayList<CourseOffering>();
         int i = 0;
+
+        // Loop through the enrolled courses
         for(Course course : courses) {
-            if(course.getCourseOfferings() != null){
-                for(CourseOffering offering : course.getCourseOfferings()) {
-                    if(offering.isStudentEnrolled(currentStudent)){
-                        System.out.println(course.writeln());
-                        System.out.print((i+1) + ":  ");
-                        System.out.println(offering.writeln());
-                        offeringNum.add(i, offering);
-                        i++;
-                    }
+            for(CourseOffering offering : course.getCourseOfferings()) {
+                if(offering.isStudentEnrolled(currentStudent) || offering.isStudentWaitlisted(currentStudent)){
+                    System.out.println(course.toString());
+                    System.out.print("\t" + (i+1) + ":  ");
+                    // Display if they are dropping vs. removing from waitlist
+                    if(offering.isStudentEnrolled(currentStudent))
+                        System.out.print("Drop->");
+                    else
+                        System.out.print("Remove from waitlist->");
+                    System.out.println(offering.toString());
+                    offeringNum.add(i, offering);
+                    i++;
                 }
             }
         }
+
+        // Check to see if the list of courses is empty
+        if(offeringNum.size() == 0){
+            System.out.println("No enrolled or waitlisted courses.");
+            return;
+        }
+
+        // Prompt the user for their selection
         System.out.println("Enter the number of the course offering you would like to drop");
         System.out.print("or enter zero to return to main menu:  ");
-        String selection = input.next();
+        String selection = input.nextLine();
         try {
             int optionNum = Integer.parseInt(selection);
             if(optionNum > 0 && optionNum <= i){
                 offeringNum.get(optionNum-1).dropStudent(currentStudent);
             }
         } catch (NumberFormatException e) {
-            
+            System.out.println("Invalid selection. Returning to main menu.");
         }
-        
+
     }
-    
-    
+
+
     private static Student studentLogin(ArrayList<Student> students){
         System.out.print("Username: ");
-        String userName = input.next();
+        String userName = input.nextLine();
         System.out.print("Password: ");
-        String password = input.next();
+        String password = input.nextLine();
         Student loginStudent = null;
         for(Student studentI : students) {
             if(userName.equals(studentI.getUsername().replace("\r","")) && password.equals(studentI.getPw().replace("\r",""))){
@@ -198,64 +258,82 @@ public class Registration {
             }
         }
         if(loginStudent == null ){
-            System.out.print("Login Failed");
+            System.out.println("Login Failed");
         }
         return loginStudent;
     }
-    
-    
+
+
     private static Student newUser(ArrayList<Student> students){
         Student newStudent = null;
         String usr = null;
+        String ageStr = null;
+        String idStr = null;
+        int age = 0;
+        int nId = 0;
+        boolean notInt = false;
         boolean failUsrCheck;
         System.out.println("Enter first name:");
-        String firstName = input.next();
+        String firstName = input.nextLine();
         System.out.println("Enter last name:");
-        String lastName = input.next();       
-        System.out.println("Enter age:");
-        String age = input.next();               
+        String lastName = input.nextLine(); 
+        do{
+            notInt = false;
+            System.out.println("Enter age:");
+            ageStr = input.nextLine();
+            try{
+                age = Integer.parseInt(ageStr);
+            }catch (NumberFormatException e) {
+                System.out.println("Age Must Be Numeric.  Try again.");
+                notInt = true;
+            }
+        }while(notInt);
         System.out.println("Enter gender:");        
-        String gender = input.next();
+        String gender = input.nextLine();
         System.out.println("Enter SSN:");     
-        String ssn = input.next();
+        String ssn = input.nextLine();
         System.out.println("Enter address:");
-        String address = input.next();
+        String address = input.nextLine();
         System.out.println("Enter city:");
-        String city = input.next();
+        String city = input.nextLine();
         System.out.println("Enter state:");
-        String state = input.next();
+        String state = input.nextLine();
         System.out.println("Enter zip:");
-        String zip = input.next();
+        String zip = input.nextLine();
         System.out.println("Enter email:");
-        String email = input.next(); 
+        String email = input.nextLine(); 
         System.out.println("Enter phone:");
-        String phone = input.next();
-        System.out.println("Enter ID:");
-        String nId = input.next(); 
+        String phone = input.nextLine();
+        do{
+            notInt = false;
+            System.out.println("Enter ID:");
+            idStr = input.nextLine(); 
+            try{
+                nId = Integer.parseInt(idStr);
+            }catch (NumberFormatException e) {
+                System.out.println("ID Must Be Numeric.  Try again.");
+                notInt = true;
+            }
+        }while(notInt);
         System.out.println("Enter college:");
-        String collg = input.next();
+        String collg = input.nextLine();
         do{
             failUsrCheck = false;
             System.out.println("Enter user name:");
-              usr = input.next(); 
+            usr = input.nextLine(); 
             for(Student studentI : students) {
-                  if(usr.equals(studentI.getUsername().replace("\r",""))){
-                      failUsrCheck = true;
-                  }
+                if(usr.equals(studentI.getUsername().replace("\r",""))){
+                    failUsrCheck = true;
+                }
             }
             if(failUsrCheck){
                 System.out.println("User name already used.");
             }
         }while (failUsrCheck);
         System.out.println("Enter password:");
-        String pw = input.next();
-        try{
-            newStudent = new Student(firstName, lastName, Integer.parseInt(age), gender, ssn, address, 
-                 city, state, zip, email, phone, Integer.parseInt(nId), collg, usr, pw);
-        } catch (NumberFormatException e) {
-            newStudent = null;
-            System.out.println("Login Failure.");
-        }
+        String pw = input.nextLine();
+            newStudent = new Student(firstName, lastName, age, gender, ssn, address, 
+                    city, state, zip, email, phone, nId, collg, usr, pw);
         return newStudent;
     }
 

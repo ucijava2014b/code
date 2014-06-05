@@ -10,6 +10,7 @@ public class CourseOffering {
 	/*
 	// Member variables
 	*/
+	private String courseOfferingID; 
 	private Date courseStartDate;
 	private Date courseEndDate;
 	private int maxStudents;
@@ -22,12 +23,14 @@ public class CourseOffering {
 	// Constructors
 	*/
 	
-	CourseOffering (Date courseStartDate,
+	CourseOffering (String courseOfferingID,
+					Date courseStartDate,
 					Date courseEndDate,
 					int maxStudents,
 					ArrayList<Student> enrolledStudents,
 					ArrayList<Student> waitlistedStudents)
 	{
+		setCourseOfferingID(courseOfferingID);
 		setCourseStartDate(courseStartDate);
 		setCourseEndDate(courseEndDate);
 		setMaxStudents(maxStudents);
@@ -41,13 +44,16 @@ public class CourseOffering {
 		List<String> memberListString = Arrays.asList(s.split(","));
 			
 		// Check to make sure we have enough tokens
-		if(memberListString.size() != 3)
+		if(memberListString.size() != 4)
 			throw new IllegalArgumentException("String did not contain the correct number of tokens.");
 			
 		try{
-			setCourseStartDate(DATE_FORMAT.parse(memberListString.get(0)));
-			setCourseEndDate(DATE_FORMAT.parse(memberListString.get(1)));
-			setMaxStudents(Integer.parseInt(memberListString.get(2)));
+			setCourseOfferingID(memberListString.get(0));
+			setCourseStartDate(DATE_FORMAT.parse(memberListString.get(1)));
+			setCourseEndDate(DATE_FORMAT.parse(memberListString.get(2)));
+			setMaxStudents(Integer.parseInt(memberListString.get(3)));
+			setEnrolledStudents(null);
+			setWaitListedStudents(null);
 		}
 		catch(Exception e) {
 			throw new IllegalArgumentException("Parameter string was not an expected format.");
@@ -58,6 +64,10 @@ public class CourseOffering {
 	// Set functions
 	*/
 
+	void setCourseOfferingID(String courseOfferingID) {
+		this.courseOfferingID = courseOfferingID;
+	}
+	
 	void setCourseStartDate(Date courseStartDate) {
 		this.courseStartDate = courseStartDate;
 	}
@@ -76,21 +86,33 @@ public class CourseOffering {
 	}
 	
 	void setEnrolledStudents(ArrayList<Student> enrolledStudents){
+		// Check for a null list
+		if(enrolledStudents == null)
+			enrolledStudents = new ArrayList<Student>();
+		
 		// Check to see if we are exceeding the max number of students
-		if(enrolledStudents != null && enrolledStudents.size() > maxStudents)
+		if(enrolledStudents.size() > maxStudents)
 			throw new IllegalArgumentException("Too many students attempted to be enrolled.");
 		
 		this.enrolledStudents = enrolledStudents;
 	}
 	
 	void setWaitListedStudents(ArrayList<Student> waitlistedStudents){
-		this.waitlistedStudents = waitlistedStudents;
+		// Check for a null list		
+		if(waitlistedStudents != null)
+			this.waitlistedStudents = waitlistedStudents;
+		else
+			this.waitlistedStudents = new ArrayList<Student>();
 	}
 	
 	/*
 	// Get functions
 	*/
 
+	String getCourseOfferingID() {
+		return this.courseOfferingID;
+	}
+	
 	Date getCourseStartDate() {
 		return this.courseStartDate;
 	}
@@ -123,6 +145,10 @@ public class CourseOffering {
 		if(isStudentEnrolled(enrollStudent) || isStudentWaitlisted(enrollStudent)) {
 		    throw new IllegalArgumentException("Student should never be enrolled twice or enrolled if on waitlist"); 
 		}
+<<<<<<< HEAD
+=======
+				
+>>>>>>> FETCH_HEAD
 		// If the class is full add to the waitlist
 		if(enrolledStudents.size() >= maxStudents)
 		    waitlistedStudents.add(enrollStudent);
@@ -174,17 +200,19 @@ public class CourseOffering {
 	// isInList
 	// Returns true if a student is found in a list
 	private boolean isInList(ArrayList<Student> studentList, Student studentToFind) {
-		for(Student currentStudent : studentList) {
-			if(currentStudent.getId() == studentToFind.getId())
-				return true;
-		}
+		if(studentList != null)
+			for(Student currentStudent : studentList) {
+				if(currentStudent.getId() == studentToFind.getId())
+					return true;
+			}
 		return false;	
 	}
 			
 	// writeln
 	// Returns a comma delimited string containing all members of the class except for the student lists
 	String writeln() {
-		return 	DATE_FORMAT.format(courseStartDate) + "," +
+		return 	courseOfferingID + "," + 
+				DATE_FORMAT.format(courseStartDate) + "," +
 				DATE_FORMAT.format(courseEndDate) + "," +
 				maxStudents;
 	}
@@ -192,6 +220,20 @@ public class CourseOffering {
 	// toString
 	// Returns a comma delimited string containing all members of the class except for the student lists
 	public String toString() {  
-        return writeln();
+        String s = "Start Date: " + DATE_FORMAT.format(courseStartDate) + "," +
+				"End Date: " + DATE_FORMAT.format(courseEndDate) + " ";
+        	
+		// Get the number of enrolled students
+		int count = 0;
+		if(enrolledStudents != null)
+			count = enrolledStudents.size();
+		
+		s = s.concat(count + "/" + maxStudents + " Students Enrolled");
+			        
+        // Display number of waitlisted students
+        if(waitlistedStudents != null && waitlistedStudents.size() > 0)
+        	s = s.concat(" " + waitlistedStudents.size() + " Waitlisted Students");
+        
+        return s;
     }
 }
