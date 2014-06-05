@@ -136,6 +136,14 @@ public class CourseOffering {
 			throw new IllegalArgumentException("Student should never be enrolled twice or enrolled if on waitlist"); 
 		}
 		
+		// See if we need to build a list of students
+		if(enrolledStudents == null)
+			enrolledStudents = new ArrayList<Student>();
+		
+		// See if we need to build a list of students
+		if(waitlistedStudents == null)
+			waitlistedStudents = new ArrayList<Student>();
+				
 		// If the class is full add to the waitlist
 		if(enrolledStudents.size() >= maxStudents)
 			waitlistedStudents.add(enrollStudent);
@@ -187,10 +195,11 @@ public class CourseOffering {
 	// isInList
 	// Returns true if a student is found in a list
 	private boolean isInList(ArrayList<Student> studentList, Student studentToFind) {
-		for(Student currentStudent : studentList) {
-			if(currentStudent.getId() == studentToFind.getId())
-				return true;
-		}
+		if(studentList != null)
+			for(Student currentStudent : studentList) {
+				if(currentStudent.getId() == studentToFind.getId())
+					return true;
+			}
 		return false;	
 	}
 			
@@ -206,6 +215,20 @@ public class CourseOffering {
 	// toString
 	// Returns a comma delimited string containing all members of the class except for the student lists
 	public String toString() {  
-        return writeln();
+        String s = "Start Date: " + DATE_FORMAT.format(courseStartDate) + "," +
+				"End Date: " + DATE_FORMAT.format(courseEndDate) + " ";
+        	
+		// Get the number of enrolled students
+		int count = 0;
+		if(enrolledStudents != null)
+			count = enrolledStudents.size();
+		
+		s = s.concat(count + "/" + maxStudents + " Students Enrolled");
+			        
+        // Display number of waitlisted students
+        if(waitlistedStudents != null && waitlistedStudents.size() > 0)
+        	s = s.concat(" " + waitlistedStudents.size() + " Waitlisted Students");
+        
+        return s;
     }
 }

@@ -124,7 +124,7 @@ public class Course {
 		return false;
 	}
 	
-	// Writeln
+	// writeln
 	// Returns a comma delimited string containing all members of the class except for the course offerings
 	String writeln() {
 		return courseID + "," +
@@ -134,7 +134,12 @@ public class Course {
 			   department;
 	}
 
+	// toString
+	// Prints a formatted course description
     public String toString() {  
-        return writeln();
+        return "Department: " + department + 
+        	   "\r" + courseNumber +
+        	   " - " + courseName +
+        	   "\rCourse Overview: " + courseOverview;
     }
 }
