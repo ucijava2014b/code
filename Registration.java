@@ -11,31 +11,26 @@ import java.util.Collections;
 public class Registration {
 
     static Scanner input = new Scanner(System.in);
+    static String StudentFile        = "Students.csv";
+    static String CourseOfferingFile = "CourseOffering.csv";
+    static String RegistrationFile   = "Registrations.csv";
+    static String WaitListFile       = "Waitlist.csv";
+    static String CoursesFile        = "Courses.csv";
+    static Student currentStudent;
+    static ArrayList<Student> students = new ArrayList<Student>();
+    static ArrayList<Course> courses = new ArrayList<Course>();
+    static ArrayList<CourseOffering> CS510Offerings = new ArrayList<CourseOffering>();
     
     public static void main(String[] args) throws ParseException{
         //  Declare Variables
-        ArrayList<Student> students = new ArrayList<Student>();
-        ArrayList<Course> courses = new ArrayList<Course>();
-        ArrayList<CourseOffering> CS510Offerings = new ArrayList<CourseOffering>();
-    String StudentFile        = "Students.csv";
-    String CourseOfferingFile = "CourseOffering.csv";
-    String CoursesFile        = "Courses.csv";
 
         String loginSelection;
         String mainSelection;
-        Student currentStudent;
         Student newStudent;
         String logoutSelection = new String("N");
         
         //  Read Data  
-        //  TODO Call Util 
         
-        
-        //  Test Classes  
-        //  REMOVE - once a seperate test class is written
-
-        System.out.println("Registering Main");
-
         
         // Generate some a course and some class offerings
 
@@ -50,9 +45,9 @@ public class Registration {
     CS510Offerings.get(1).setWaitListedStudents(new ArrayList<Student>());
     courses.get(0).setCourseOfferings(CS510Offerings);
 
-    System.out.println(Util.displayContents(StudentFile));
-        System.out.println(courses.get(0).writeln());
-        System.out.println(courses.get(1).toString());
+    System.out.println(Util.toString(StudentFile));
+    System.out.println(courses.get(0).writeln());
+    System.out.println(courses.get(1).toString());
 
 
         //  Login Prompt
@@ -88,6 +83,14 @@ public class Registration {
                 }
             }    
             else if(loginSelection.equals("3")){
+		// Save enrollment details before exiting
+		try {
+		    Util.saveEnrollment(currentStudent,courses,RegistrationFile);
+		    Util.saveWaitlist(CS510Offerings,WaitListFile);
+		} catch (IOException e){
+		    e.printStackTrace();
+		}
+		
                 System.out.println("Exiting the Registration System");
             }
             else {

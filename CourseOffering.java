@@ -107,7 +107,7 @@ public class CourseOffering {
 		return this.enrolledStudents;
 	}
 	
-	ArrayList<Student> getWaitListedStudents(){
+        ArrayList<Student> getWaitListedStudents(){
 		return this.waitlistedStudents;
 	}
 	
@@ -121,30 +121,30 @@ public class CourseOffering {
 	{
 		// Check to see if the student is already enrolled or waitlisted
 		if(isStudentEnrolled(enrollStudent) || isStudentWaitlisted(enrollStudent)) {
-			throw new IllegalArgumentException("Student should never be enrolled twice or enrolled if on waitlist"); 
+		    throw new IllegalArgumentException("Student should never be enrolled twice or enrolled if on waitlist"); 
 		}
-		
 		// If the class is full add to the waitlist
 		if(enrolledStudents.size() >= maxStudents)
-			waitlistedStudents.add(enrollStudent);
+		    waitlistedStudents.add(enrollStudent);
 		else
-			enrolledStudents.add(enrollStudent);
+		    enrolledStudents.add(enrollStudent);
 	}
-	
+
+
 	// dropStudent
 	// drops any student listed matching by ID in both enrolled and waitlisted
 	boolean dropStudent(Student dropStudent)
 	{
-		// Search the waitlisted & enrolled students
-		return removeFromList(waitlistedStudents, dropStudent) || removeFromList(enrolledStudents, dropStudent);
+	    // Search the waitlisted & enrolled students
+	    return removeFromList(waitlistedStudents, dropStudent) || removeFromList(enrolledStudents, dropStudent);
 	}
 
 	// removeFromList
 	// Removes a student from a list passed in
 	private boolean removeFromList(ArrayList<Student> studentList, Student studentToRemove) {
-		boolean found = false;
+	    boolean found = false;
 		
-		for(int i = 0; i < studentList.size(); i++)
+	    for(int i = 0; i < studentList.size(); i++)
 		{
 			// Is there a match in the list for the ID
 			if(studentList.get(i).getId() == studentToRemove.getId()) {
@@ -154,7 +154,6 @@ public class CourseOffering {
 				i--;
 			}
 		}
-		
 		return found;
 	}
 	
