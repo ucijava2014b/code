@@ -11,7 +11,9 @@ import java.util.Collections;
 public class Registration {
 
     static Scanner input = new Scanner(System.in);
-<<<<<<< HEAD
+    static final String STUDENT_FILE = "Students.csv";
+    static final String COURSE_OFFERING_FILE = "CourseOffering.csv";
+    static final String COURSES_FILE = "Courses.csv";
     static String StudentFile        = "Students.csv";
     static String CourseOfferingFile = "CourseOffering.csv";
     static String RegistrationFile   = "Registrations.csv";
@@ -22,48 +24,26 @@ public class Registration {
     static ArrayList<Course> courses = new ArrayList<Course>();
     static ArrayList<CourseOffering> CS510Offerings = new ArrayList<CourseOffering>();
     
-    public static void main(String[] args) throws ParseException{
-        //  Declare Variables
-=======
-
-    static final String STUDENT_FILE = "Students.csv";
-    static final String COURSE_OFFERING_FILE = "CourseOffering.csv";
-    static final String COURSES_FILE = "Courses.csv";
-
     public static void main(String[] args) {
         //  Declare Variables
         ArrayList<Student> students = new ArrayList<Student>();
         ArrayList<Course> courses = new ArrayList<Course>();
->>>>>>> FETCH_HEAD
-
         String loginSelection;
         String mainSelection;
         Student newStudent;
         String logoutSelection = new String("N");
-<<<<<<< HEAD
-        
         //  Read Data  
-        
-        
-=======
-
->>>>>>> FETCH_HEAD
         // Generate some a course and some class offerings
 
         try{
             
             students = Util.addStudents(students, STUDENT_FILE);
-
             courses = Util.addCourses(courses, COURSES_FILE);
 
-<<<<<<< HEAD
-    System.out.println(Util.toString(StudentFile));
-    System.out.println(courses.get(0).writeln());
-    System.out.println(courses.get(1).toString());
-=======
+	    System.out.println(Util.toString(STUDENT_FILE));
+	    System.out.println(courses.get(0).writeln());
+	    System.out.println(courses.get(1).toString());
             courses = Util.addCourseOffering(courses, COURSE_OFFERING_FILE);
-            
-            // TODO - need to map students to their offered courses
         }
         catch (Exception e) {
             // Something went horribly wrong
@@ -71,8 +51,6 @@ public class Registration {
             e.printStackTrace();
             return;
         }
->>>>>>> FETCH_HEAD
-
 
         //  Login Prompt
         do{   

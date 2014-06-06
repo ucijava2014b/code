@@ -142,13 +142,6 @@ public class CourseOffering {
 	void enrollStudent(Student enrollStudent)
 	{
 		// Check to see if the student is already enrolled or waitlisted
-		if(isStudentEnrolled(enrollStudent) || isStudentWaitlisted(enrollStudent)) {
-		    throw new IllegalArgumentException("Student should never be enrolled twice or enrolled if on waitlist"); 
-		}
-<<<<<<< HEAD
-=======
-				
->>>>>>> FETCH_HEAD
 		// If the class is full add to the waitlist
 		if(enrolledStudents.size() >= maxStudents)
 		    waitlistedStudents.add(enrollStudent);
