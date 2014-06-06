@@ -154,7 +154,7 @@ public class Util {
 		stringToWrite = course.toString() + "\n";
                 for(CourseOffering offering : course.getCourseOfferings()) {
                     if(offering.isStudentEnrolled(currentStudent)){
-			stringToWrite += (i+1) + ": " + offering.toString() + "\n";
+			stringToWrite += (i+1) + "," + offering.toString() + "\n";
 			FileUtils.writeStringToFile(rFile,stringToWrite,true);    
                         i++;
 		    }
@@ -162,16 +162,27 @@ public class Util {
 	    }
 	}
     }
-    public static void saveWaitlist(ArrayList<CourseOffering> Offering, String waitlistFile)  throws IOException
+
+    public static void saveWaitlist(Student currentStudent,ArrayList<Course> Courses, String waitlistFile)  throws  IOException
     {
         File wFile = new File(waitlistFile);
-	ArrayList<Student> wls = Offering.get(0).getWaitListedStudents();
-	for(Student st : wls){
-	    String stString = st.getId() + ":" + st.getUsername() + "\n";
-	    FileUtils.writeStringToFile(wFile,stString,true);    
+        Collections.sort(Courses, new courseCompare());
+        ArrayList<CourseOffering> offeringNum = new ArrayList<CourseOffering>();
+        int i = 0;
+	String stringToWrite = "";
+        for(Course course : Courses) {
+            if(course.getCourseOfferings() != null){
+		stringToWrite = course.toString() + "\n";
+                for(CourseOffering offering : course.getCourseOfferings()) {
+		    if(offering.isStudentWaitlisted(currentStudent)) {
+			stringToWrite += (i+1) + "," + offering.toString() + "\n";
+			FileUtils.writeStringToFile(wFile,stringToWrite,true);    
+                        i++;
+		    }
+		}
+	    }
 	}
     }
-
     public static String toString(String fileName)
     {
         File file = new File(fileName);

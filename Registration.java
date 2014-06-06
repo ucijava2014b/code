@@ -11,23 +11,19 @@ import java.util.Collections;
 public class Registration {
 
     static Scanner input = new Scanner(System.in);
-    static final String STUDENT_FILE = "Students.csv";
+    static final String STUDENT_FILE         = "Students.csv";
     static final String COURSE_OFFERING_FILE = "CourseOffering.csv";
-    static final String COURSES_FILE = "Courses.csv";
-    static String StudentFile        = "Students.csv";
-    static String CourseOfferingFile = "CourseOffering.csv";
-    static String RegistrationFile   = "Registrations.csv";
-    static String WaitListFile       = "Waitlist.csv";
-    static String CoursesFile        = "Courses.csv";
+    static final String COURSES_FILE        = "Courses.csv";
+    static final String REGISTRATION_FILE   = "Registrations.csv";
+    static final String WAITLIST_FILE       = "Waitlist.csv";
+
     static Student currentStudent;
     static ArrayList<Student> students = new ArrayList<Student>();
     static ArrayList<Course> courses = new ArrayList<Course>();
-    static ArrayList<CourseOffering> CS510Offerings = new ArrayList<CourseOffering>();
     
     public static void main(String[] args) {
+
         //  Declare Variables
-        ArrayList<Student> students = new ArrayList<Student>();
-        ArrayList<Course> courses = new ArrayList<Course>();
         String loginSelection;
         String mainSelection;
         Student newStudent;
@@ -87,8 +83,8 @@ public class Registration {
             else if(loginSelection.equals("3")){
 		// Save enrollment details before exiting
 		try {
-		    Util.saveEnrollment(currentStudent,courses,RegistrationFile);
-		    Util.saveWaitlist(CS510Offerings,WaitListFile);
+		    Util.saveEnrollment(currentStudent,courses,REGISTRATION_FILE);
+		    Util.saveWaitlist(currentStudent,courses,WAITLIST_FILE);
 		} catch (IOException e){
 		    e.printStackTrace();
 		}
