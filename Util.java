@@ -1,200 +1,223 @@
-import org.apache.commons.io.FileUtils;
 import java.io.*;
 import java.util.ArrayList;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
-import java.util.Locale;
 import java.util.Collections;
 
+/*
+ * // Util Class
+ * // Provides utility functions for dealing with reading and updating files 
+ */
 public class Util {
 
-	public static ArrayList<Course> addCourseOffering(ArrayList<Course> courses, String fileName) throws ParseException{
+	/*
+	 * // Member functions
+	 */
+	
+	// addCourseOffering
+	// reads in the courseOffering file and assigns to the correct courses
+	public static ArrayList<Course> addCourseOffering(
+			ArrayList<Course> courses, String fileName) throws ParseException {
 		File coFile;
 		Scanner fileScanner;
 		try {
-			coFile      = new File(fileName);
+			coFile = new File(fileName);
 			fileScanner = new Scanner(coFile);
 			fileScanner.useDelimiter("\n");
 
 			CourseOffering currentOffering;
 
+			// Discard the header record
+			fileScanner.next();
+
 			while (fileScanner.hasNext()) {
-				String coLine    = fileScanner.next();
+				String coLine = fileScanner.next();
 				// Remove the end of line characters
 				coLine = coLine.replace("\n", "").replace("\r", "");
+
+				currentOffering = new CourseOffering(coLine);
+
+				// Need to split this here because we need to get the course ID
+				// to associate
 				String[] coElems = coLine.split(",");
-
-				// 0 CourseOffering (String courseOfferingID,
-				// 1                courseID <==== Not retained
-				// 1			  	Date courseStartDate,
-				// 2	 			Date courseEndDate,
-				// 3				int maxStudents,
-				// 4 				ArrayList<Student> enrolledStudents,
-				// 5				ArrayList<Student> waitlistedStudents)
-
-				currentOffering = new CourseOffering(coElems[0],
-						new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse(coElems[2]), 
-						new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse(coElems[3]), 
-						Integer.parseInt(coElems[4]),
-						null,
-						null);
+				String courseID = coElems[0];
 
 				// Look for the matching course
-				for(Course currentCourse : courses) {
-					if(currentCourse.getCourseID().compareTo(coElems[1]) == 0) {
+				for (Course currentCourse : courses) {
+					if (currentCourse.getCourseID().compareTo(courseID) == 0) {
 						currentCourse.getCourseOfferings().add(currentOffering);
+					}
+				}
+			}
+			fileScanner.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("Unable to locate file:" + fileName);
+			e.printStackTrace();
+			System.exit(1);
+		}
+		return courses;
+	}
+
+	// addCourses
+	// reads in the courses file and builds the list
+	public static ArrayList<Course> addCourses(ArrayList<Course> Courses,
+			String courseFile) throws ParseException {
+		File coFile;
+		Scanner fileScanner;
+		try {
+			coFile = new File(courseFile);
+			fileScanner = new Scanner(coFile);
+			fileScanner.useDelimiter("\n");
+
+			// Discard the header record
+			fileScanner.next();
+
+			while (fileScanner.hasNext()) {
+				String courseLine = fileScanner.next();
+				// Remove the end of line characters
+				courseLine = courseLine.replace("\n", "").replace("\r", "");
+
+				Courses.add(new Course(courseLine));
+			}
+			fileScanner.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("Unable to locate file:" + courseFile);
+			e.printStackTrace();
+			System.exit(1);
+		}
+		return Courses;
+	}
+
+	// addStudents
+	// reads in the student file and builds the list
+	public static ArrayList<Student> addStudents(ArrayList<Student> Students,
+			String studentFile) throws ParseException {
+		File stFile;
+		Scanner fileScanner;
+		try {
+			stFile = new File(studentFile);
+			fileScanner = new Scanner(stFile);
+			fileScanner.useDelimiter("\n");
+
+			// Discard the header record
+			fileScanner.next();
+
+			while (fileScanner.hasNext()) {
+				String studentLine = fileScanner.next();
+				// Remove the end of line characters
+				studentLine = studentLine.replace("\n", "").replace("\r", "");
+
+				Students.add(new Student(studentLine));
+			}
+			fileScanner.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("Unable to locate file:" + studentFile);
+			e.printStackTrace();
+			System.exit(1);
+		}
+		return Students;
+	}
+
+	// addCourses
+	// reads in the enrollment file and assigns students to the correct course offering
+	public static ArrayList<Course> readEnrollment(
+			ArrayList<Course> courseList, ArrayList<Student> studentList,
+			String enrollmentFile) {
+		File stFile;
+		Scanner fileScanner;
+		try {
+			stFile = new File(enrollmentFile);
+			fileScanner = new Scanner(stFile);
+			fileScanner.useDelimiter("\n");
+
+			// Discard the header record
+			fileScanner.next();
+
+			while (fileScanner.hasNext()) {
+				String enrollmentLine = fileScanner.next();
+				// Remove the end of line characters
+				enrollmentLine = enrollmentLine.replace("\n", "").replace("\r",
+						"");
+
+				// 0 StudentId
+				// 1 ENROLLED/WAITLIST
+				// 2 CourseOfferingID
+				List<String> memberListString = Arrays.asList(enrollmentLine
+						.split(","));
+
+				// Lets find the course offering
+				for (Course currentCourse : courseList) {
+					for (CourseOffering currentOffering : currentCourse
+							.getCourseOfferings()) {
+						if (currentOffering.getCourseOfferingID().compareTo(
+								memberListString.get(2)) == 0) {
+
+							// Now lets find the student
+							for (Student currentStudent : studentList) {
+								if (currentStudent.getID() == Integer
+										.parseInt(memberListString.get(0))) {
+									// Found the student and the offering. Need
+									// to determine if we are enrolling or
+									// waitlisting
+									if (memberListString.get(1).compareTo(
+											"ENROLLED") == 0)
+										currentOffering.enrollStudent(
+												currentStudent, false);
+									else
+										currentOffering.enrollStudent(
+												currentStudent, true);
+								}
+							}
+
+						}
 					}
 				}
 
 			}
 			fileScanner.close();
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			System.out.println("Warning - unable to locate registration file:" + enrollmentFile);
+			System.out.println("First time using the system will see this warning.");
 		}
-		return courses;
+
+		return courseList;
 	}
 
-	public static ArrayList<Course> addCourses(ArrayList<Course> Courses, String courseFile) throws ParseException{
-		File coFile;
-		Scanner fileScanner;
-		try {
-			coFile      = new File(courseFile);
-			fileScanner = new Scanner(coFile);
-			fileScanner.useDelimiter("\n");
-			while (fileScanner.hasNext()) {
-				String courseLine = fileScanner.next();
-				// Remove the end of line characters
-				courseLine = courseLine.replace("\n", "").replace("\r", "");
-				String[] courseElems = courseLine.split(",");
+	// saveEnrollment
+	// Creates a file mapping of students to course offerings
+	public static void saveEnrollment(ArrayList<Course> Courses,
+			String registrationFile) throws IOException {
 
-				// 0 public Course(String courseID, 
-				// 1	   		   String courseName, 
-				// 2			   int courseNumber, 
-				// 3			   String courseOverview, 
-				// 4		       String department, 
-				// N/A			   ArrayList<CourseOffering> courseOfferings)
-				
-				Courses.add(new Course(courseElems[0],
-									   courseElems[1],
-									   Integer.parseInt(courseElems[2]),
-									   courseElems[3],
-									   courseElems[4],
-									   new ArrayList<CourseOffering>()));
+		File rFile = new File(registrationFile);
+		PrintWriter outFile = new PrintWriter(rFile);
+		Collections.sort(Courses, new courseCompare());
+
+		String stringToWrite;
+
+		// Write a header record
+		outFile.println("studentID, ENROLLED/WAITLIST, courseOfferingID");
+
+		for (Course course : Courses) {
+			for (CourseOffering offering : course.getCourseOfferings()) {
+				// Write the list of enrolled students
+				for (Student currentStudent : offering.getEnrolledStudents()) {
+					stringToWrite = currentStudent.getID() + "," + "ENROLLED,"
+							+ offering.getCourseOfferingID();
+					outFile.println(stringToWrite);
+				}
+
+				// Write the list of waitlisted students
+				for (Student currentStudent : offering.getWaitListedStudents()) {
+					stringToWrite = currentStudent.getID() + "," + "WAITLIST,"
+							+ offering.getCourseOfferingID();
+					outFile.println(stringToWrite);
+				}
 			}
-			fileScanner.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
 		}
-		return Courses;
+
+		outFile.close();
 	}
 
-
-
-    public static ArrayList<Student> addStudents(ArrayList<Student> Students, String studentFile) throws ParseException{
-	File stFile;
-	Scanner fileScanner;
-	try {
-	    stFile      = new File(studentFile);
-	    fileScanner = new Scanner(stFile);
-	    fileScanner.useDelimiter("\n");
-	    while (fileScanner.hasNext()) {
-		String studentLine    = fileScanner.next();
-		String[] studentElems = studentLine.split(",");
-
-		//0 public Student(String firstName, 
-		//1  String lastName, 
-		//2 int age, 
-		//3 String gender, 
-		//4 String ssn, 
-		//5 String address, 
-		//6 String city, 
-		//7 String state, 
-		//8 String zip, 
-		//9 String email, 
-		//10 String phone, 
-		//11 int nId, 
-		//12 String collg, 
-		//13 String usr, 
-		//14 String pw)
-		Students.add(new Student(studentElems[0],
-					 studentElems[1],
-					 Integer.parseInt(studentElems[2]),
-					 studentElems[3],
-					 studentElems[4],
-					 studentElems[5],
-					 studentElems[6],
-					 studentElems[7],
-					 studentElems[8],
-					 studentElems[9],
-					 studentElems[10],
-					 Integer.parseInt(studentElems[11]),
-					 studentElems[12],
-					 studentElems[13],
-					 studentElems[14]
-					 ));
-	    }
-	    fileScanner.close();
-	} catch (FileNotFoundException e) {
-	    e.printStackTrace();
-	}
-	return Students;
-    }
-
-    public static void saveEnrollment(Student currentStudent,ArrayList<Course> Courses, String registrationFile)  throws  IOException
-    {
-        File rFile = new File(registrationFile);
-        Collections.sort(Courses, new courseCompare());
-        ArrayList<CourseOffering> offeringNum = new ArrayList<CourseOffering>();
-        int i = 0;
-	String stringToWrite = "";
-        for(Course course : Courses) {
-            if(course.getCourseOfferings() != null){
-		stringToWrite = course.toString() + "\n";
-                for(CourseOffering offering : course.getCourseOfferings()) {
-                    if(offering.isStudentEnrolled(currentStudent)){
-			stringToWrite += (i+1) + "," + offering.toString() + "\n";
-			FileUtils.writeStringToFile(rFile,stringToWrite,true);    
-                        i++;
-		    }
-		}
-	    }
-	}
-    }
-
-    public static void saveWaitlist(Student currentStudent,ArrayList<Course> Courses, String waitlistFile)  throws  IOException
-    {
-        File wFile = new File(waitlistFile);
-        Collections.sort(Courses, new courseCompare());
-        ArrayList<CourseOffering> offeringNum = new ArrayList<CourseOffering>();
-        int i = 0;
-	String stringToWrite = "";
-        for(Course course : Courses) {
-            if(course.getCourseOfferings() != null){
-		stringToWrite = course.toString() + "\n";
-                for(CourseOffering offering : course.getCourseOfferings()) {
-		    if(offering.isStudentWaitlisted(currentStudent)) {
-			stringToWrite += (i+1) + "," + offering.toString() + "\n";
-			FileUtils.writeStringToFile(wFile,stringToWrite,true);    
-                        i++;
-		    }
-		}
-	    }
-	}
-    }
-    public static String toString(String fileName)
-    {
-        File file = new File(fileName);
-	String content = "";
-        try
-	    {
-		content = FileUtils.readFileToString(file);
-	    } catch (IOException e)
-	    {
-		e.printStackTrace();
-	    }
-	return content;
-
-    }
 }
