@@ -1,6 +1,8 @@
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /*
  * // Student Class
@@ -12,15 +14,32 @@ class Student extends Person {
 	 */
 	// make sure to update the Student(string) and writeLine() functions when
 	// adding members
-	private int ID;
-	private String college;
-	private String username;
-	private String password;
+	private int ID = -1;
+	private String college = null;
+	private String username = null;
+	private String password = null;
+
+	// Based on
+	// http://www.mkyong.com/regular-expressions/how-to-validate-password-with-regular-expression/
+	// (?=.*\d) # must contains one digit from 0-9
+	// (?=.*[a-z]) # must contains one lowercase characters
+	// (?=.*[A-Z]) # must contains one uppercase characters
+	// (?=.*[&~!@#$%]) # must contains one special symbols in the list "&~!@#$%"
+	// {6,128} # length at least 6 characters and maximum of 128
+	private final String PASSWORD_PATTERN = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[&~!@#$%]).{6,20})";
+	public final String PASSWORD_REQUIREMENTS = "Must contains one digit from 0-9\nMust contains one lowercase characters\nmust contains one uppercase characters\nmust contains one special symbols in the list \"&~!@#$%\"\nlength at least 6 characters and maximum of 128";
+	private Pattern pattern;
+	private Matcher matcher;
 
 	/*
 	 * // Constructors
 	 */
-	
+
+	// Default constructor
+	public Student() {
+
+	}
+
 	// Constructor Method
 	public Student(String firstName, String lastName, int age, String gender,
 			String ssn, String address, String city, String state, String zip,
@@ -56,14 +75,14 @@ class Student extends Person {
 					"Parameter string was not an expected format.");
 		}
 	}
-	
+
 	/*
 	 * // Set functions
 	 */
 	public void setID(int ID) {
 		this.ID = ID;
 	}
-	
+
 	public void setCollege(String college) {
 		this.college = college;
 	}
@@ -73,22 +92,24 @@ class Student extends Person {
 	}
 
 	public void setPassword(String password) {
+		if (passwordValidator(password) == false) {
+			throw new IllegalArgumentException(PASSWORD_REQUIREMENTS);
+		}
+
 		this.password = password;
 	}
 
 	/*
 	 * // Get functions
 	 */
-	
+
 	public int getID() {
 		return this.ID;
 	}
 
-
 	public String getCollege() {
 		return this.college;
 	}
-
 
 	public String getUsername() {
 		return this.username;
@@ -111,7 +132,8 @@ class Student extends Person {
 	}
 
 	// writeLine
-	// Serializes the object for output. The string constructor expects the input string to be in this format
+	// Serializes the object for output. The string constructor expects the
+	// input string to be in this format
 	public String writeLine() {
 		return super.writeLine() + "," + ID + "," + college + "," + username
 				+ "," + password;
@@ -123,6 +145,12 @@ class Student extends Person {
 		// return String.format("%10s %10d %10s %10s", getFullName() , getAge()
 		// , getGender() , getSsn() );
 		return super.toString() + ",\n" + ID + ",\n College = " + college;
+	}
+
+	private boolean passwordValidator(final String password) {
+		pattern = Pattern.compile(PASSWORD_PATTERN);
+		matcher = pattern.matcher(password);
+		return matcher.matches();
 	}
 
 }

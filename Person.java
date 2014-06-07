@@ -21,17 +21,17 @@ class Person implements Comparable<Person> {
 	 */
 	// make sure to update the Person(string) and writeLine() functions when
 	// adding members
-	private String firstName;
-	private String lastName;
-	private int age;
-	private String gender;
-	private String ssn;
-	private String address;
-	private String city;
-	private String state;
-	private String zip;
-	private String email;
-	private String phone;
+	private String firstName = null;
+	private String lastName = null;
+	private int age = -1;
+	private String gender = null;
+	private String ssn = null;
+	private String address = null;
+	private String city = null;
+	private String state = null;
+	private String zip = null;
+	private String email = null;
+	private String phone = null;
 
 	private static final int SSN_LENGTH = 9;
 	private static final int MIN_AGE = 0;
@@ -40,6 +40,11 @@ class Person implements Comparable<Person> {
 	/*
 	 * // Constructors
 	 */
+	
+	// Default constructor
+	public Person() {
+		
+	}
 	
 	// Constructor Method
 	public Person(String firstName, String lastName, int age, String gender,
@@ -109,6 +114,9 @@ class Person implements Comparable<Person> {
 	}
 
 	public void setGender(String gender) {
+		// Convert to uppercase
+		gender = gender.toUpperCase();
+		
 		// Check to see if we have an invalid gender
 		if (!(gender.compareTo("M") == 0) && !(gender.compareTo("F") == 0))
 			throw new IllegalArgumentException("Invalid gender");
@@ -117,6 +125,9 @@ class Person implements Comparable<Person> {
 	}
 
 	public void setSSN(String ssn) {
+		// remove all non-numeric characters
+		ssn = ssn.replaceAll("[^\\d.]", "");
+		
 		// Check to see if the SSN is valid
 		if (!(ssn.length() == SSN_LENGTH && isNumber(ssn)))
 			throw new IllegalArgumentException("Invalid SSN");
@@ -143,13 +154,12 @@ class Person implements Comparable<Person> {
 	}
 
 	public void setZip(String zip) {
-		// Must be numeric
-		if (!isNumber(zip))
-			throw new IllegalArgumentException("Invalid Phone Number");
-
+		// remove all non-numeric characters
+		zip = zip.replaceAll("[^\\d.]", "");
+		
 		// Must either be 5 or 9 digits
 		if (zip.length() != 5 && zip.length() != 9)
-			throw new IllegalArgumentException("Invalid Phone Number");
+			throw new IllegalArgumentException("Invalid zip");
 
 		this.zip = zip;
 	}
@@ -192,7 +202,7 @@ class Person implements Comparable<Person> {
 	}
 
 
-	public String getSsn() {
+	public String getSSN() {
 		return ssn;
 	}
 

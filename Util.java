@@ -219,5 +219,24 @@ public class Util {
 
 		outFile.close();
 	}
+	
+	// saveStudents
+	// Saves the students to the student file
+	public static void saveStudents(ArrayList<Student> students,
+			String studentFile) throws IOException {
+
+		File rFile = new File(studentFile);
+		PrintWriter outFile = new PrintWriter(rFile);
+
+		// Write a header record
+		outFile.println("firstName, lastName, age, gender, SSN, address, city, state, ZIP, email, phone, ID, college, username, password");
+		
+		for (Student currentStudent : students){
+			outFile.println(currentStudent.writeLine());
+		}
+
+		outFile.close();
+	}
+	
 
 }

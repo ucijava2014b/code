@@ -92,11 +92,11 @@ public class Registration {
 				// Save enrollment details before exiting
 				try {
 					Util.saveEnrollment(courses, REGISTRATION_FILE);
+					Util.saveStudents(students, STUDENT_FILE);
 				} catch (IOException e){
 					System.out.println("Error saving configuration.");
 					e.printStackTrace();
 				}
-
 				System.out.println("Exiting the Registration System");
 			}
 			else {
@@ -252,60 +252,146 @@ public class Registration {
 	// newUser
 	// prompts the user for all information required to become a student user
 	private static Student newUser(ArrayList<Student> students){
-		Student newStudent = null;
+		Student newStudent = new Student();
+	
+		do{
+			try{
+				System.out.println("Enter first name:");
+				newStudent.setFirstName(input.nextLine());
+			}
+			catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		} while(newStudent.getFirstName() == null);
+
+		do{
+			try{
+				System.out.println("Enter last name:");
+				newStudent.setLastName(input.nextLine());
+			}
+			catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		} while(newStudent.getLastName() == null);
+		
+		do{
+			try{
+				System.out.println("Enter age:");
+				newStudent.setAge(Integer.parseInt(input.nextLine()));
+			}
+			catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		} while(newStudent.getAge() == -1);
+
+		do{
+			try{
+				System.out.println("Enter gender(M/F):");
+				newStudent.setGender(input.nextLine());
+			}
+			catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		} while(newStudent.getGender() == null);
+
+		do{
+			try{
+				System.out.println("Enter SSN:");
+				newStudent.setSSN(input.nextLine());
+			}
+			catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		} while(newStudent.getSSN() == null);
+		        
+		do{
+			try{
+				System.out.println("Enter address:");
+				newStudent.setAddress(input.nextLine());
+			}
+			catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		} while(newStudent.getAddress() == null);
+		
+		do{
+			try{
+				System.out.println("Enter city:");
+				newStudent.setCity(input.nextLine());
+			}
+			catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		} while(newStudent.getCity() == null);		
+
+		do{
+			try{
+				System.out.println("Enter state(two character abbreviation):");
+				newStudent.setState(input.nextLine());
+			}
+			catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		} while(newStudent.getState() == null);
+
+		do{
+			try{
+				System.out.println("Enter zip:");
+				newStudent.setZip(input.nextLine());
+			}
+			catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		} while(newStudent.getZip() == null);
+
+		do{
+			try{
+				System.out.println("Enter email:");
+				newStudent.setEmail(input.nextLine());
+			}
+			catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		} while(newStudent.getEmail() == null);
+		
+		do{
+			try{
+				System.out.println("Enter phone:");
+				String temp = input.nextLine();
+				// remove all non-numeric characters
+				temp = temp.replaceAll("[^\\d.]", "");
+				newStudent.setPhone(temp);
+			}
+			catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		} while(newStudent.getPhone() == null);
+
+		do{
+			try{
+				System.out.println("Enter ID (Numeric):");
+				newStudent.setID(Integer.parseInt(input.nextLine()));
+			}
+			catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		} while(newStudent.getID() == -1);
+		
+		do{
+			try{
+				System.out.println("Enter college:");
+				newStudent.setCollege(input.nextLine());
+			}
+			catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		} while(newStudent.getCollege() == null);
+
 		String usr = null;
-		String ageStr = null;
-		String idStr = null;
-		int age = 0;
-		int nId = 0;
-		boolean notInt = false;
-		boolean failUsrCheck;
-		System.out.println("Enter first name:");
-		String firstName = input.nextLine();
-		System.out.println("Enter last name:");
-		String lastName = input.nextLine(); 
+		boolean failUsrCheck = false;
+		
 		do{
-			notInt = false;
-			System.out.println("Enter age:");
-			ageStr = input.nextLine();
-			try{
-				age = Integer.parseInt(ageStr);
-			}catch (NumberFormatException e) {
-				System.out.println("Age Must Be Numeric.  Try again.");
-				notInt = true;
-			}
-		}while(notInt);
-		System.out.println("Enter gender:");        
-		String gender = input.nextLine();
-		System.out.println("Enter SSN:");     
-		String ssn = input.nextLine();
-		System.out.println("Enter address:");
-		String address = input.nextLine();
-		System.out.println("Enter city:");
-		String city = input.nextLine();
-		System.out.println("Enter state:");
-		String state = input.nextLine();
-		System.out.println("Enter zip:");
-		String zip = input.nextLine();
-		System.out.println("Enter email:");
-		String email = input.nextLine(); 
-		System.out.println("Enter phone:");
-		String phone = input.nextLine();
-		do{
-			notInt = false;
-			System.out.println("Enter ID:");
-			idStr = input.nextLine(); 
-			try{
-				nId = Integer.parseInt(idStr);
-			}catch (NumberFormatException e) {
-				System.out.println("ID Must Be Numeric.  Try again.");
-				notInt = true;
-			}
-		}while(notInt);
-		System.out.println("Enter college:");
-		String collg = input.nextLine();
-		do{
-			failUsrCheck = false;
+
 			System.out.println("Enter user name:");
 			usr = input.nextLine(); 
 			for(Student studentI : students) {
@@ -317,10 +403,20 @@ public class Registration {
 				System.out.println("User name already used.");
 			}
 		}while (failUsrCheck);
-		System.out.println("Enter password:");
-		String pw = input.nextLine();
-		newStudent = new Student(firstName, lastName, age, gender, ssn, address, 
-				city, state, zip, email, phone, nId, collg, usr, pw);
+		newStudent.setUsername(usr);
+
+		// Display the block of text with the password requirements
+		System.out.println(newStudent.PASSWORD_REQUIREMENTS);
+		do{
+			try{
+				System.out.println("Enter password:");
+				newStudent.setPassword(input.nextLine());
+			}
+			catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		} while(newStudent.getPassword() == null);
+		
 		return newStudent;
 	}
 
